@@ -1,0 +1,1 @@
+echo "RABOTAI BLYAT"
