@@ -1,0 +1,59 @@
+dist:     focal    
+sudo:     required  
+
+language: cpp      
+
+os:
+    - linux
+      #    - osx
+
+compiler:
+    - gcc
+
+#env:
+    # список переменных окружения, влияющих на матрицу сборки:
+
+      #matrix:
+  # exclude:
+        # вручную исключим ненужные элементы из матрицы сборки:
+        #      - os:       osx
+        #  compiler: gcc
+
+  #- os:  osx
+  #        env: TARGET_CPU=x86 BUILD_CONFIGURATION=Debug
+
+  #      - os:  osx
+  #        env: TARGET_CPU=x86 BUILD_CONFIGURATION=Release
+before_install:
+    - sudo apt-get install libgtest-dev
+    - sudo apt-get install valgrind
+    - sudo apt-get install cppcheck
+    - pip3 install cpplint
+install:
+    # скрипт настройки среды и установки зависимостей:
+    - source ci/travis/install-$TRAVIS_OS_NAME.sh
+
+script:
+    # скрипт сборки и тестирования проекта:
+    - cppcheck --error-exitcode=1 project
+    #- cpplint project/src/*.c
+    #- cpplint project/include/*.h
+    - mkdir build
+    - cd build
+    - cmake ..
+    - make
+    - cd tests && ./tests
+    - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no --error-exitcode=1 ./tests
+
+      #deploy:
+    # выкладываем tagged-коммиты на GitHub Releases:
+    # provider:     releases
+    #file:         <package-file>
+    #skip_cleanup: true
+    #overwrite:    true
+
+      #api_key:
+      #  secure:   <encrypted-github-token>
+
+      #on:
+      #  tags:     true
