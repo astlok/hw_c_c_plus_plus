@@ -12,6 +12,8 @@ compiler:
 before_install:
     - sudo apt-get install libgtest-dev
     - sudo apt-get install valgrind
+    - pip3 install cpplint
+    - sudo apt-get install cppcheck
     - pip3 install gcovr
     - sudo apt install gcovr
 script:
