@@ -28,6 +28,5 @@ jobs:
           cd build
           cmake ..
           make
-          cd project && ./project
-          exec 0 < ../../test.txt
-          valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no --error-exitcode=1 ./project
+          cd tests && ./tests
+          valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no --error-exitcode=1 ./tests
