@@ -14,9 +14,9 @@ TEST(test1, eml) {
 
     user_info = parse_user_eml(eml);
 
-    ASSERT_TRUE(!strcmp(user_info->user_name, "test\0"));
-    ASSERT_TRUE(!strcmp(user_info->mail_name, "mail\0"));
-    ASSERT_TRUE(!strcmp(user_info->domain, "ru\0"));
+    EXPECT_TRUE(!strcmp(user_info->user_name, "test\0"));
+    EXPECT_TRUE(!strcmp(user_info->mail_name, "mail\0"));
+    EXPECT_TRUE(!strcmp(user_info->domain, "ru\0"));
 
     free_user_info(user_info);
 }
