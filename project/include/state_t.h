@@ -1,5 +1,5 @@
-#ifndef HW_C_PLUS_PLUS_STATE_T_H
-#define HW_C_PLUS_PLUS_STATE_T_H
+#ifndef PROJECT_INCLUDE_STATE_T_H_
+#define PROJECT_INCLUDE_STATE_T_H_
 
 typedef enum {
     STATE_USER_NAME,
@@ -9,4 +9,4 @@ typedef enum {
     STATE_ERROR
 } state_t;
 
-#endif //HW_C_PLUS_PLUS_STATE_T_H
+#endif  // PROJECT_INCLUDE_STATE_T_H_

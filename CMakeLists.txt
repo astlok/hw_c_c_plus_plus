@@ -13,5 +13,5 @@ include_directories(${GTEST_INCLUDE_DIRS})
 ENABLE_TESTING()
 
 add_subdirectory(project)
-#add_subdirectory(tests)
+add_subdirectory(tests)
 

@@ -10,7 +10,7 @@ int main() {
     puts("Enter your eml:");
     char c = 0;
     char *eml = calloc(1, sizeof(char));
-    while(scanf("%c", &c) == 1 && c != '\n') {
+    while (scanf("%c", &c) == 1 && c != '\n') {
         char *tmp = (char*)realloc(eml, (strlen(eml) + 2) * sizeof(char));
         if (tmp == NULL) {
             free(eml);

@@ -6,7 +6,6 @@
 #include "memory.h"
 
 user_info_t *parse_user_eml(char * eml) {
-
     user_info_t * user_info = (user_info_t*)calloc(1, sizeof(user_info_t));
     if (init_user_info(user_info) == -1) {
         return NULL;

@@ -1,10 +1,9 @@
-#ifndef HW_C_PLUS_PLUS_USER_INFO_T_H
-#define HW_C_PLUS_PLUS_USER_INFO_T_H
+#ifndef PROJECT_INCLUDE_USER_INFO_T_H_
+#define PROJECT_INCLUDE_USER_INFO_T_H_
 
 typedef struct user_info_t {
     char *domain;
     char *mail_name;
     char *user_name;
-
 } user_info_t;
-#endif //HW_C_PLUS_PLUS_USER_INFO_T_H
+#endif  // PROJECT_INCLUDE_USER_INFO_T_H_

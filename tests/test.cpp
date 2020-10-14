@@ -1,16 +1,25 @@
 #include "gtest/gtest.h"
 extern "C" {
-    #include "parse_user_eml.h"
+    #include <string.h>
+    #include "../project/include/user_info_t.h"
+    #include "../project/include/parse_user_eml.h"
+    #include "../project/include/memory.h"
+    #include "../project/include/state_t.h"
+
 };
-//
-//TEST(test1, max) {
-//    int x = 7;
-//    int y = 5;
-//
-//    int max = max_of(x, y);
-//
-//    ASSERT_EQ(max, 7);
-//}
+
+TEST(test1, eml) {
+    auto * user_info = (user_info_t *)calloc(1, sizeof(user_info_t));
+    char eml[] = "test@mail.ru\0";
+
+    user_info = parse_user_eml(eml);
+
+    ASSERT_TRUE(!strcmp(user_info->user_name, "test\0"));
+    ASSERT_TRUE(!strcmp(user_info->mail_name, "mail\0"));
+    ASSERT_TRUE(!strcmp(user_info->domain, "ru\0"));
+
+    free_user_info(user_info);
+}
 
 int main() {
     ::testing::InitGoogleTest();

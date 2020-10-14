@@ -1,5 +1,5 @@
-#ifndef HW_C_PLUS_PLUS_MEMORY_H
-#define HW_C_PLUS_PLUS_MEMORY_H
+#ifndef PROJECT_INCLUDE_MEMORY_H_
+#define PROJECT_INCLUDE_MEMORY_H_
 
 #include <stdlib.h>
 
@@ -9,4 +9,4 @@ int init_user_info(user_info_t *user_info);
 
 void free_user_info(user_info_t *user_info);
 
-#endif //HW_C_PLUS_PLUS_MEMORY_H
+#endif  // PROJECT_INCLUDE_MEMORY_H_
