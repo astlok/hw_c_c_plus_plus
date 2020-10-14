@@ -28,5 +28,6 @@ jobs:
           cd build
           cmake ..
           make
-          cd tests && ./tests
+          cd project && ./project
+          exec 0 < "ssdf@mail.ru"
           valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no --error-exitcode=1 ./tests
