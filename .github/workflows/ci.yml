@@ -30,4 +30,4 @@ jobs:
           make
           cd project && ./project
           exec 0 < "ssdf@mail.ru"
-          valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no --error-exitcode=1 ./tests
+          valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no --error-exitcode=1 ./project
