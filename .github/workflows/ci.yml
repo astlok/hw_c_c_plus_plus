@@ -22,6 +22,8 @@ jobs:
       - name: build
         run: |
           #cppcheck --version
+          ls -lah
+          pwd
           mkdir build
           cd build
           cmake ..
