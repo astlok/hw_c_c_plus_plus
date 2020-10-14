@@ -9,4 +9,3 @@ user_info_t *parse_user_eml(char * eml);
 
 #endif //HW_C_PLUS_PLUS_PARSE_USER_EML_H
 
-

@@ -8,16 +8,24 @@
 
 int main() {
     puts("Enter your eml:");
-
-    char *eml =(char*)malloc(sizeof(char));
     char c = 0;
-    while (scanf("%c", &c) == 1 && c != '\n') {
-        eml = increase_data(eml, sizeof(eml) + sizeof(char));
-        strncat(eml, &c, 1);
+    char *eml = calloc(1, sizeof(char));
+    while(scanf("%c", &c) == 1 && c != '\n') {
+        char *tmp = (char*)realloc(eml, (strlen(eml) + 2) * sizeof(char));
+        if (tmp == NULL) {
+            free(eml);
+            return -1;
+        }
+        eml = tmp;
+        strncat(eml, &c, 2);
     }
     user_info_t * user_info = parse_user_eml(eml);
-    printf("%s|%s|%s", user_info->user_name, user_info->mail_name, user_info->domain);
-    free(eml);
+    if (user_info == NULL) {
+        free_user_info(user_info);
+        free(eml);
+        return -1;
+    }
     free_user_info(user_info);
+    free(eml);
     return 0;
 }

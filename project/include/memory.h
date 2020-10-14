@@ -5,8 +5,6 @@
 
 #include "user_info_t.h"
 
-char* increase_data(char *data, size_t length);
-
 int init_user_info(user_info_t *user_info);
 
 void free_user_info(user_info_t *user_info);
