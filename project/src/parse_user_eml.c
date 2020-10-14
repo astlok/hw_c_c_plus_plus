@@ -27,7 +27,7 @@ user_info_t *parse_user_eml(char * eml) {
         if (state == STATE_USER_NAME) {
             char *tmp = realloc(user_info->user_name, strlen(user_info->user_name) + 2);
             if (tmp == NULL) {
-                free(user_info->user_name);
+                free_user_info(user_info);
                 return NULL;
             }
             user_info->user_name = tmp;
@@ -36,7 +36,7 @@ user_info_t *parse_user_eml(char * eml) {
         if (state == STATE_MAIL_NAME) {
             char *tmp = realloc(user_info->mail_name, strlen(user_info->mail_name) + 2);
             if (tmp == NULL) {
-                free(user_info->mail_name);
+                free_user_info(user_info);
                 return NULL;
             }
             user_info->mail_name = tmp;
@@ -45,12 +45,19 @@ user_info_t *parse_user_eml(char * eml) {
         if (state == STATE_DOMAIN) {
             char *tmp = realloc(user_info->domain, strlen(user_info->domain) + 2);
             if (tmp == NULL) {
-                free(user_info->domain);
+                free_user_info(user_info);
                 return NULL;
             }
             user_info->domain = tmp;
             strncat(user_info->domain, (const char *) &c, 2);
+            if (i == strlen(eml) - 1) {
+                state = STATE_END;
+            }
         }
+    }
+    if (state != STATE_END) {
+        free_user_info(user_info);
+        return NULL;
     }
     return user_info;
 }

@@ -21,8 +21,8 @@ int main() {
     }
     user_info_t * user_info = parse_user_eml(eml);
     if (user_info == NULL) {
-        free_user_info(user_info);
         free(eml);
+        puts("Incorret value");
         return -1;
     }
     free_user_info(user_info);
