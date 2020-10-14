@@ -9,7 +9,6 @@ extern "C" {
 };
 
 TEST(test1, eml) {
-//    auto * user_info = (user_info_t *)calloc(1, sizeof(user_info_t));
     char eml[] = "test@mail.ru\0";
 
     user_info_t *user_info = parse_user_eml(eml);
