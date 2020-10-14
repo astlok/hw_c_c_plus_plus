@@ -9,10 +9,10 @@ extern "C" {
 };
 
 TEST(test1, eml) {
-    auto * user_info = (user_info_t *)calloc(1, sizeof(user_info_t));
+//    auto * user_info = (user_info_t *)calloc(1, sizeof(user_info_t));
     char eml[] = "test@mail.ru\0";
 
-    user_info = parse_user_eml(eml);
+    user_info_t *user_info = parse_user_eml(eml);
 
     EXPECT_TRUE(!strcmp(user_info->user_name, "test\0"));
     EXPECT_TRUE(!strcmp(user_info->mail_name, "mail\0"));
