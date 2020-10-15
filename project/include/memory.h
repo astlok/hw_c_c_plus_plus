@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-#include "user_info_t.h"
+#include "user_info.h"
 
 int init_user_info(user_info_t *user_info);
 

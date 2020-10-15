@@ -3,9 +3,9 @@
 
 #define AT_SIGN 64
 
-#include "user_info_t.h"
+#include "user_info.h"
 
-user_info_t *parse_user_eml(char * eml);
+user_info_t *parse_user_email(const char * eml);
 
 #endif  // PROJECT_INCLUDE_PARSE_USER_EML_H_
 

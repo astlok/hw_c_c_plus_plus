@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
 
-add_executable(tests test.cpp ../project/src/parse_user_eml.c ../project/src/memory.c)
+set(PROJECT_SOURCE_FILES
+        ../project/src/memory.c
+        ../project/src/parse_user_email.c)
+
+add_executable(tests test.cpp ${PROJECT_SOURCE_FILES})
 
 include_directories(../project/include)
 

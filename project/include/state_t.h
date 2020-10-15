@@ -2,10 +2,10 @@
 #define PROJECT_INCLUDE_STATE_T_H_
 
 typedef enum {
-    STATE_USER_NAME,
-    STATE_MAIL_NAME,
-    STATE_DOMAIN,
-    STATE_END,
+    USER_NAME,
+    MAIL_NAME,
+    GLOB_DOMAIN,
+    END,
     STATE_ERROR
 } state_t;
 
