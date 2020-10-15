@@ -7,24 +7,6 @@ extern "C" {
     #include "state_t.h"
 
 };
-class Foo {
- public:
-    Foo(): i(0) {}
-    ~Foo() = default;
-    int i;
-};
-
-class TestFoo : public ::testing::Test {
- protected:
-    void SetUp() {
-        foo = new Foo;
-        foo->i = 5;
-    }
-    void TearDown() {
-        delete foo;
-    }
-    Foo *foo;
-};
 
 TEST(correct_email, test1) {
     char eml[] = "test@mail.ru\0";
