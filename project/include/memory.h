@@ -5,7 +5,7 @@
 
 #include "user_info.h"
 
-int init_user_info(user_info_t *user_info);
+int init_user_info(user_info_t *user_info, size_t alloc_mem);
 
 void free_user_info(user_info_t *user_info);
 
