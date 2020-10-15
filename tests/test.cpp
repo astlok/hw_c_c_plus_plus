@@ -13,10 +13,9 @@ TEST(correct_email, test1) {
 
     user_info_t *user_info = parse_user_email(eml);
 
-    ASSERT_EQ(1,1);
-    EXPECT_TRUE(!strcmp(user_info->user_name, "test"));
-    EXPECT_TRUE(!strcmp(user_info->mail_name, "mail"));
-    EXPECT_TRUE(!strcmp(user_info->domain, "ru"));
+    EXPECT_EQ(strcmp(user_info->user_name, "test"), 0);
+    EXPECT_EQ(strcmp(user_info->mail_name, "mail"), 0);
+    EXPECT_EQ(strcmp(user_info->domain, "ru"), 0);
 
     free_user_info(user_info);
 }
@@ -26,9 +25,9 @@ TEST(correct_email, test2) {
 
     user_info_t *user_info = parse_user_email(eml);
 
-    EXPECT_TRUE(!strcmp(user_info->user_name, "astlok"));
-    EXPECT_TRUE(!strcmp(user_info->mail_name, "google"));
-    EXPECT_TRUE(!strcmp(user_info->domain, "com"));
+    EXPECT_EQ(strcmp(user_info->user_name, "astlok"), 0);
+    EXPECT_EQ(strcmp(user_info->mail_name, "google"), 0);
+    EXPECT_EQ(strcmp(user_info->domain, "com"), 0);
 
     free_user_info(user_info);
 }
@@ -38,7 +37,7 @@ TEST(incorrect_email, test1) {
 
     user_info_t *user_info = parse_user_email(eml);
 
-    EXPECT_TRUE(user_info == nullptr);
+    EXPECT_EQ(user_info, nullptr);
 
 }
 
@@ -47,7 +46,7 @@ TEST(incorrect_email, test2) {
 
     user_info_t *user_info = parse_user_email(eml);
 
-    EXPECT_TRUE(user_info == nullptr);
+    EXPECT_EQ(user_info, nullptr);
 
 }
 
