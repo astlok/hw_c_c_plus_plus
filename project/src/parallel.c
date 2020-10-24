@@ -28,7 +28,7 @@ int parallel(const char *filename, long size, long result[2]) {
         return -1;
     }
 
-    if (input_segments(segments, child_count, segment_size, size) == -1) {
+    if (input_segments(segments, array, child_count, segment_size, size) == -1) {
         free(array);
         return -1;
     }
@@ -71,14 +71,22 @@ int parallel(const char *filename, long size, long result[2]) {
     return 0;
 }
 
-int input_segments(segment *segments, long child_count, long segment_size, long size) {
+int input_segments(segment *segments, const char *array, long child_count, long segment_size, long size) {
     for (long i = 0; i < child_count; ++i) {
+        long temp_index = 0;
         if (i == 0) {
             segments[i].begin = 0;
-            segments[i].end = segments[i].begin + segment_size - 1;
+            temp_index = segments[i].begin + segment_size - 1;
+            while (((array[temp_index] >= '0') && (array[temp_index] <= '9')) && temp_index != size - 1) {
+                temp_index++;
+            }
+            segments[i].end = temp_index;
         } else if (i != child_count - 1) {
             segments[i].begin = segments[i - 1].end + 1;
-            segments[i].end = segments[i].begin + segment_size - 1;
+            while (((array[temp_index] >= '0') && (array[temp_index] <= '9')) && (temp_index != size - 1)) {
+                temp_index++;
+            }
+            segments[i].end = temp_index;
         } else {
             segments[i].begin = segments[i - 1].end + 1;
             segments[i].end = size - 1;
