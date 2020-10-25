@@ -6,7 +6,7 @@
 
 long file_size(const char *filename) {
     char path[100];
-    snprintf(path, strlen(filename) + 1, "../../tests/%s", filename);
+    snprintf(path, strlen(filename) + 20, "../../tests/%s", filename);
     FILE *file = fopen(path, "r");
     if (!file) {
         return -1;
@@ -21,7 +21,7 @@ long file_size(const char *filename) {
 
 int input_array(char *array, const char *filename, const long *size) {
     char path[100];
-    snprintf(path, strlen(filename) + 1, "../../tests/%s", filename);
+    snprintf(path, strlen(filename) + 20, "../../tests/%s", filename);
     FILE *file = fopen(path, "r");
     if (file == NULL) {
         return -1;

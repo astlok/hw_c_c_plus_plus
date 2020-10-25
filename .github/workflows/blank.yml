@@ -35,7 +35,6 @@ jobs:
           cd tests && python3 stress_test.py
       - name: gtests
         run: |
-          cd ..
           cd build
           cd tests
           ./tests
