@@ -89,16 +89,6 @@ TEST(test_sequential, test8) {
     ASSERT_EQ(result[1], 624);
 }
 
-TEST(test_sequential, test9) {
-    const char *filename = "test9.txt";
-
-    long result[2] = {};
-    long size = file_size(filename);
-    sequential(filename, size, result);
-    ASSERT_EQ(result[0], 50964361);
-    ASSERT_EQ(result[1], 50964369);
-}
-
 TEST(test_parallel, test1) {
     const char *filename = "test1.txt";
 
@@ -181,15 +171,6 @@ TEST(test_parallel, test8) {
     ASSERT_EQ(result[1], 624);
 }
 
-TEST(test_parallel, test9) {
-    const char *filename = "test9.txt";
-
-    long result[2] = {};
-    long size = file_size(filename);
-    parallel(filename, size, result);
-    ASSERT_EQ(result[0], 50964361);
-    ASSERT_EQ(result[1], 50964369);
-}
 
 TEST(stress_test, test) {
     const char *filename = "test_stress.txt";
