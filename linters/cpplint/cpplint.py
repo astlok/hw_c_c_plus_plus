@@ -118,8 +118,8 @@ Syntax: cpplint.py [--verbose=#] [--output=vs7] [--filter=-x,+y,...]
       ignored.
 
       Examples:
-        Assuming that top/utils/.git exists (and cwd=top/utils), the header guard
-        CPP variables for top/utils/chrome/browser/ui/browser.h are:
+        Assuming that top/src/.git exists (and cwd=top/src), the header guard
+        CPP variables for top/src/chrome/browser/ui/browser.h are:
 
         No flag => CHROME_BROWSER_UI_BROWSER_H_
         --root=chrome => BROWSER_UI_BROWSER_H_
@@ -205,7 +205,7 @@ _ERROR_CATEGORIES = [
     'build/explicit_make_pair',
     'build/forward_decl',
     'build/header_guard',
-    'build/utils',
+    'build/include',
     'build/include_alpha',
     'build/include_order',
     'build/include_what_you_use',
@@ -442,7 +442,7 @@ _TYPES = re.compile(
     r')$')
 
 
-# These headers are excluded from [build/utils] and [build/include_order]
+# These headers are excluded from [build/include] and [build/include_order]
 # checks:
 # - Anything not following google file name conventions (containing an
 #   uppercase character, such as Python.h or nsStringAPI.h, for example).
@@ -503,7 +503,7 @@ _ALT_TOKEN_REPLACEMENT = {
 # Compile regular expression that matches all the above keywords.  The "[ =()]"
 # bit is meant to avoid matching these keywords outside of boolean expressions.
 #
-# False positives utils C-style multi-line comments and multi-line strings
+# False positives include C-style multi-line comments and multi-line strings
 # but those have always been troublesome for cpplint.
 _ALT_TOKEN_REPLACEMENT_PATTERN = re.compile(
     r'[ =()](' + ('|'.join(_ALT_TOKEN_REPLACEMENT.keys())) + r')(?=[ (]|$)')
@@ -754,7 +754,7 @@ class _IncludeState(object):
     self._last_header = ''
 
     # Update list of includes.  Note that we never pop from the
-    # utils list.
+    # include list.
     if directive in ('if', 'ifdef', 'ifndef'):
       self.include_list.append([])
     elif directive in ('else', 'elif'):
@@ -795,7 +795,7 @@ class _IncludeState(object):
     # If previous line was a blank line, assume that the headers are
     # intentionally sorted the way they are.
     if (self._last_header > header_path and
-        Match(r'^\s*#\s*utils\b', clean_lines.elided[linenum - 1])):
+        Match(r'^\s*#\s*include\b', clean_lines.elided[linenum - 1])):
       return False
     return True
 
@@ -803,7 +803,7 @@ class _IncludeState(object):
     """Returns a non-empty error message if the next header is out of order.
 
     This function also updates the internal state to be ready to check
-    the next utils.
+    the next include.
 
     Args:
       header_type: One of the _XXX_HEADER constants defined above.
@@ -1084,7 +1084,7 @@ class _FunctionState(object):
 
 
 class _IncludeError(Exception):
-  """Indicates a problem with the utils order in a file."""
+  """Indicates a problem with the include order in a file."""
   pass
 
 
@@ -1107,7 +1107,7 @@ class FileInfo(object):
 
     If we have a real absolute path name here we can try to do something smart:
     detecting the root of the checkout and truncating /path/to/checkout from
-    the name so that we get header guards that don't utils things like
+    the name so that we get header guards that don't include things like
     "C:\Documents and Settings\..." or "/home/username/..." in them and thus
     people on different computers who have checked the source out to different
     locations won't see bogus errors.
@@ -1975,7 +1975,7 @@ def CheckForHeaderGuard(filename, clean_lines, error):
 
 
 def CheckHeaderFileIncluded(filename, include_state, error):
-  """Logs an error if a .cc file does not utils its header."""
+  """Logs an error if a .cc file does not include its header."""
 
   # Do not check test files
   fileinfo = FileInfo(filename)
@@ -1994,8 +1994,8 @@ def CheckHeaderFileIncluded(filename, include_state, error):
       if not first_include:
         first_include = f[1]
 
-  error(filename, first_include, 'build/utils', 5,
-        '%s should utils its header file %s' % (fileinfo.RepositoryName(),
+  error(filename, first_include, 'build/include', 5,
+        '%s should include its header file %s' % (fileinfo.RepositoryName(),
                                                   headername))
 
 
@@ -3334,7 +3334,7 @@ def CheckOperatorSpacing(filename, clean_lines, linenum, error):
   # You should always have whitespace around binary operators.
   #
   # Check <= and >= first to avoid false positives with < and >, then
-  # check non-utils lines for spacing around < and >.
+  # check non-include lines for spacing around < and >.
   #
   # If the operator is followed by a comma, assume it's be used in a
   # macro context and don't do any checks.  This avoids false
@@ -3346,7 +3346,7 @@ def CheckOperatorSpacing(filename, clean_lines, linenum, error):
   if match:
     error(filename, linenum, 'whitespace/operators', 3,
           'Missing spaces around %s' % match.group(1))
-  elif not Match(r'#.*utils', line):
+  elif not Match(r'#.*include', line):
     # Look for < that is not surrounded by spaces.  This is only
     # triggered if both sides are missing spaces, even though
     # technically should should flag if at least one side is missing a
@@ -4365,7 +4365,7 @@ def CheckStyle(filename, clean_lines, linenum, file_extension, nesting_state,
         line.startswith('#define %s' % cppvar) or
         line.startswith('#endif  // %s' % cppvar)):
       is_header_guard = True
-  # #utils lines and header guards can be long, since there's no clean way to
+  # #include lines and header guards can be long, since there's no clean way to
   # split them.
   #
   # URLs can be long too.  It's possible to split these, but it makes them
@@ -4373,7 +4373,7 @@ def CheckStyle(filename, clean_lines, linenum, file_extension, nesting_state,
   #
   # The "$Id:...$" comment may also get very long without it being the
   # developers fault.
-  if (not line.startswith('#utils') and not is_header_guard and
+  if (not line.startswith('#include') and not is_header_guard and
       not Match(r'^\s*//.*http(s?)://\S*$', line) and
       not Match(r'^\s*//\s*[^\s]*$', line) and
       not Match(r'^// \$Id:.*#[0-9]+ \$$', line)):
@@ -4411,7 +4411,7 @@ def CheckStyle(filename, clean_lines, linenum, file_extension, nesting_state,
     CheckSectionSpacing(filename, clean_lines, classinfo, linenum, error)
 
 
-_RE_PATTERN_INCLUDE = re.compile(r'^\s*#\s*utils\s*([<"])([^>"]*)[>"].*$')
+_RE_PATTERN_INCLUDE = re.compile(r'^\s*#\s*include\s*([<"])([^>"]*)[>"].*$')
 # Matches the first component of a filename delimited by -s and _s. That is:
 #  _RE_FIRST_COMPONENT.match('foo').group(0) == 'foo'
 #  _RE_FIRST_COMPONENT.match('foo.cc').group(0) == 'foo'
@@ -4448,12 +4448,12 @@ def _DropCommonSuffixes(filename):
 
 
 def _ClassifyInclude(fileinfo, include, is_system):
-  """Figures out what kind of header 'utils' is.
+  """Figures out what kind of header 'include' is.
 
   Args:
     fileinfo: The current file cpplint is running over. A FileInfo instance.
     include: The path to a #included file.
-    is_system: True if the #utils used <> rather than "".
+    is_system: True if the #include used <> rather than "".
 
   Returns:
     One of the _XXX_HEADER constants.
@@ -4481,8 +4481,8 @@ def _ClassifyInclude(fileinfo, include, is_system):
     else:
       return _C_SYS_HEADER
 
-  # If the target file and the utils we're checking share a
-  # basename when we drop common extensions, and the utils
+  # If the target file and the include we're checking share a
+  # basename when we drop common extensions, and the include
   # lives in . , then it's likely to be owned by the target file.
   target_dir, target_base = (
       os.path.split(_DropCommonSuffixes(fileinfo.RepositoryName())))
@@ -4492,9 +4492,9 @@ def _ClassifyInclude(fileinfo, include, is_system):
       include_dir == os.path.normpath(target_dir + '/../public')):
     return _LIKELY_MY_HEADER
 
-  # If the target and utils share some initial basename
+  # If the target and include share some initial basename
   # component, it's possible the target is implementing the
-  # utils, so it's allowed to be first, but we'll never
+  # include, so it's allowed to be first, but we'll never
   # complain if it's not there.
   target_first_component = _RE_FIRST_COMPONENT.match(target_base)
   include_first_component = _RE_FIRST_COMPONENT.match(include_base)
@@ -4508,11 +4508,11 @@ def _ClassifyInclude(fileinfo, include, is_system):
 
 
 def CheckIncludeLine(filename, clean_lines, linenum, include_state, error):
-  """Check rules that are applicable to #utils lines.
+  """Check rules that are applicable to #include lines.
 
-  Strings on #utils lines are NOT removed from elided line, to make
+  Strings on #include lines are NOT removed from elided line, to make
   certain tasks easier. However, to prevent false positives, checks
-  applicable to #utils lines in CheckLanguage must be put here.
+  applicable to #include lines in CheckLanguage must be put here.
 
   Args:
     filename: The name of the current file.
@@ -4524,19 +4524,19 @@ def CheckIncludeLine(filename, clean_lines, linenum, include_state, error):
   fileinfo = FileInfo(filename)
   line = clean_lines.lines[linenum]
 
-  # "utils" should use the new style "foo/bar.h" instead of just "bar.h"
+  # "include" should use the new style "foo/bar.h" instead of just "bar.h"
   # Only do this check if the included header follows google naming
   # conventions.  If not, assume that it's a 3rd party API that
-  # requires special utils conventions.
+  # requires special include conventions.
   #
   # We also make an exception for Lua headers, which follow google
-  # naming convention but not the utils convention.
-  match = Match(r'#utils\s*"([^/]+\.h)"', line)
+  # naming convention but not the include convention.
+  match = Match(r'#include\s*"([^/]+\.h)"', line)
   if match and not _THIRD_PARTY_HEADERS_PATTERN.match(match.group(1)):
-    error(filename, linenum, 'build/utils', 4,
+    error(filename, linenum, 'build/include', 4,
           'Include the directory when naming .h files')
 
-  # we shouldn't utils a file more than once. actually, there are a
+  # we shouldn't include a file more than once. actually, there are a
   # handful of instances where doing so is okay, but in general it's
   # not.
   match = _RE_PATTERN_INCLUDE.search(line)
@@ -4545,13 +4545,13 @@ def CheckIncludeLine(filename, clean_lines, linenum, include_state, error):
     is_system = (match.group(1) == '<')
     duplicate_line = include_state.FindHeader(include)
     if duplicate_line >= 0:
-      error(filename, linenum, 'build/utils', 4,
+      error(filename, linenum, 'build/include', 4,
             '"%s" already included at %s:%s' %
             (include, filename, duplicate_line))
     elif (include.endswith('.cc') and
           os.path.dirname(fileinfo.RepositoryName()) != os.path.dirname(include)):
-      error(filename, linenum, 'build/utils', 4,
-            'Do not utils .cc files from other packages')
+      error(filename, linenum, 'build/include', 4,
+            'Do not include .cc files from other packages')
     elif not _THIRD_PARTY_HEADERS_PATTERN.match(include):
       include_state.include_list[-1].append((include, linenum))
 
@@ -4562,7 +4562,7 @@ def CheckIncludeLine(filename, clean_lines, linenum, include_state, error):
       # 4) for foo.cc, foo.h  (deprecated location)
       # 5) other google headers
       #
-      # We classify each utils statement as one of those 5 types
+      # We classify each include statement as one of those 5 types
       # using a number of techniques. The include_state object keeps
       # track of the highest type seen, and complains if we see a
       # lower type after that.
@@ -4694,7 +4694,7 @@ def CheckLanguage(filename, clean_lines, linenum, file_extension,
     CheckIncludeLine(filename, clean_lines, linenum, include_state, error)
     return
 
-  # Reset utils state across preprocessor directives.  This is meant
+  # Reset include state across preprocessor directives.  This is meant
   # to silence warnings for conditional includes.
   match = Match(r'^\s*#\s*(if|ifdef|ifndef|elif|else|endif)\b', line)
   if match:
@@ -4703,7 +4703,7 @@ def CheckLanguage(filename, clean_lines, linenum, file_extension,
   # Make Windows paths like Unix.
   fullname = os.path.abspath(filename).replace('\\', '/')
 
-  # Perform other checks now that we are sure that this is not an utils line
+  # Perform other checks now that we are sure that this is not an include line
   CheckCasts(filename, clean_lines, linenum, error)
   CheckGlobalStatic(filename, clean_lines, linenum, error)
   CheckPrintf(filename, clean_lines, linenum, error)
@@ -5407,10 +5407,10 @@ def FilesBelongToSameModule(filename_cc, filename_h):
   to belong to the same module here.
 
   If the filename_cc contains a longer path than the filename_h, for example,
-  '/absolute/path/to/base/sysinfo.cc', and this file would utils
+  '/absolute/path/to/base/sysinfo.cc', and this file would include
   'base/sysinfo.h', this function also produces the prefix needed to open the
   header. This is used by the caller of this function to more robustly open the
-  header file. We don't have access to the real utils paths in this context,
+  header file. We don't have access to the real include paths in this context,
   so we need this guesswork here.
 
   Known bugs: tools/base/bar.cc and base/bar.h belong to the same module
@@ -5485,9 +5485,9 @@ def CheckForIncludeWhatYouUse(filename, clean_lines, include_state, error,
 
   This function will output warnings to make sure you are including the headers
   necessary for the stl containers and functions that you use. We only give one
-  reason to utils a header. For example, if you use both equal_to<> and
+  reason to include a header. For example, if you use both equal_to<> and
   less<> in a .h file, only one (the latter in the file) of these will be
-  reported as a reason to utils the <functional>.
+  reported as a reason to include the <functional>.
 
   Args:
     filename: The name of the current file.
@@ -5531,8 +5531,8 @@ def CheckForIncludeWhatYouUse(filename, clean_lines, include_state, error,
         if prefix.endswith('std::') or not prefix.endswith('::'):
           required[header] = (linenum, template)
 
-  # The policy is that if you #utils something in foo.h you don't need to
-  # utils it again in foo.cc. Here, we will look at possible includes.
+  # The policy is that if you #include something in foo.h you don't need to
+  # include it again in foo.cc. Here, we will look at possible includes.
   # Let's flatten the include_state include_list and copy it into a dictionary.
   include_dict = dict([item for sublist in include_state.include_list
                        for item in sublist])
@@ -5563,7 +5563,7 @@ def CheckForIncludeWhatYouUse(filename, clean_lines, include_state, error,
 
   # If we can't find the header file for a .cc, assume it's because we don't
   # know where to look. In that case we'll give up as we're not sure they
-  # didn't utils it in the .h file.
+  # didn't include it in the .h file.
   # TODO(unknown): Do a better job of finding .h files so we are confident that
   # not having the .h file means there isn't one.
   if filename.endswith('.cc') and not header_found:
@@ -5575,7 +5575,7 @@ def CheckForIncludeWhatYouUse(filename, clean_lines, include_state, error,
     if required_header_unstripped.strip('<>"') not in include_dict:
       error(filename, required[required_header_unstripped][0],
             'build/include_what_you_use', 4,
-            'Add #utils ' + required_header_unstripped + ' for ' + template)
+            'Add #include ' + required_header_unstripped + ' for ' + template)
 
 
 _RE_PATTERN_EXPLICIT_MAKEPAIR = re.compile(r'\bmake_pair\s*<')
@@ -5816,7 +5816,7 @@ def FlagCxx11Features(filename, clean_lines, linenum, error):
   """
   line = clean_lines.elided[linenum]
 
-  include = Match(r'\s*#\s*utils\s+[<"]([^<"]+)[">]', line)
+  include = Match(r'\s*#\s*include\s+[<"]([^<"]+)[">]', line)
 
   # Flag unapproved C++ TR1 headers.
   if include and include.group(1).startswith('tr1/'):
@@ -5868,7 +5868,7 @@ def FlagCxx14Features(filename, clean_lines, linenum, error):
   """
   line = clean_lines.elided[linenum]
 
-  include = Match(r'\s*#\s*utils\s+[<"]([^<"]+)[">]', line)
+  include = Match(r'\s*#\s*include\s+[<"]([^<"]+)[">]', line)
 
   # Flag unapproved C++14 headers.
   if include and include.group(1) in ('scoped_allocator', 'shared_mutex'):
