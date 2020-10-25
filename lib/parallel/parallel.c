@@ -1,11 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/mman.h>
 
-#include "segment.h"
 #include "parallel.h"
 #include "utils.h"
-#include <sys/mman.h>
 
 int parallel(const char *filename, long size, long result[2]) {
     long child_count = sysconf(_SC_NPROCESSORS_ONLN);

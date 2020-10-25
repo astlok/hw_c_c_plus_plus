@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "utils.h"
 #include "sequential.h"
@@ -17,17 +18,31 @@ int main(int argc, char const* argv[]) {
     if (size == -1) {
         return EXIT_FAILURE;
     }
-    if (sequential(filename, size, result) == -1) {
+
+    double start_sequential = clock();
+
+    if (sequential(filename, size, result) == EXIT_FAILURE) {
         return EXIT_FAILURE;
     }
-    printf("Sequental. First symbol %ld, last symbol %ld\n", result[0], result[1]);
+    double finish_sequential = clock();
+
+    printf("Sequential. Time: %lf\n",  (finish_sequential - start_sequential) / CLOCKS_PER_SEC);
+
+    printf("First symbol %ld, last symbol %ld\n", result[0], result[1]);
 
     result[0] = 0;
     result[1] = 0;
-    if (parallel(filename, size, result) == -1) {
+
+    double start_parallel = clock();
+
+    if (parallel(filename, size, result) == EXIT_FAILURE) {
         return EXIT_FAILURE;
     }
-    printf("Parallel. First symbol %ld, last symbol %ld\n", result[0], result[1]);
+    double finish_parallel = clock();
+
+    printf("Parallel. Time: %lf\n", (finish_parallel - start_parallel) / CLOCKS_PER_SEC);
+
+    printf("First symbol %ld, last symbol %ld\n", result[0], result[1]);
 
     return EXIT_SUCCESS;
 }
