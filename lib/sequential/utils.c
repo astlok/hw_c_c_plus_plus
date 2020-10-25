@@ -6,14 +6,14 @@
 
 long file_size(const char *filename) {
     char path[100];
-    sprintf(path,"../../tests/%s", filename);
+    snprintf(path, strlen(filename) + 1, "../../tests/%s", filename);
     FILE *file = fopen(path, "r");
     if (!file) {
         return -1;
     }
 
     long size = 0;
-    fseek (file, 0, SEEK_END);
+    fseek(file, 0, SEEK_END);
     size = ftell(file);
     fclose(file);
     return size;
@@ -21,7 +21,7 @@ long file_size(const char *filename) {
 
 int input_array(char *array, const char *filename, const long *size) {
     char path[100];
-    sprintf(path,"../../tests/%s", filename);
+    snprintf(path, strlen(filename) + 1, "../../tests/%s", filename);
     FILE *file = fopen(path, "r");
     if (file == NULL) {
         return -1;

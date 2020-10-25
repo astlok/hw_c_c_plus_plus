@@ -1,6 +1,6 @@
-#ifndef HW_C_PLUS_PLUS_SEQUENTIAL_H
-#define HW_C_PLUS_PLUS_SEQUENTIAL_H
+#ifndef LIB_SEQUENTIAL_SEQUENTIAL_H_
+#define LIB_SEQUENTIAL_SEQUENTIAL_H_
 
 int sequential(const char *filename, long size, long result[2]);
 
-#endif //HW_C_PLUS_PLUS_SEQUENTIAL_H
+#endif  // LIB_SEQUENTIAL_SEQUENTIAL_H_

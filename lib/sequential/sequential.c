@@ -12,7 +12,7 @@ int sequential(const char *filename, long size, long result[2]) {
         return -1;
     }
 
-    if (max_sequence(array,0, size, result) == -1) {
+    if (max_sequence(array, 0, size, result) == -1) {
         free(array);
         return -1;
     }

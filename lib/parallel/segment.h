@@ -1,5 +1,5 @@
-#ifndef HW_C_PLUS_PLUS_SEGMENT_H
-#define HW_C_PLUS_PLUS_SEGMENT_H
+#ifndef LIB_PARALLEL_SEGMENT_H_
+#define LIB_PARALLEL_SEGMENT_H_
 
 typedef struct segment {
     long begin;
@@ -8,4 +8,4 @@ typedef struct segment {
     long max_size;
     long result[2];
 } segment;
-#endif //HW_C_PLUS_PLUS_SEGMENT_H
+#endif  // LIB_PARALLEL_SEGMENT_H_

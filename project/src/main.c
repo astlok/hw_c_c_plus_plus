@@ -14,7 +14,7 @@ int main(int argc, char const* argv[]) {
 
     long result[2] = {};
     long size = file_size(filename);
-    if (size == -1){
+    if (size == -1) {
         return EXIT_FAILURE;
     }
     if (sequential(filename, size, result) == -1) {

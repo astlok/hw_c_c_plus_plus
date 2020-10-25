@@ -1,5 +1,5 @@
-#ifndef HW_C_PLUS_PLUS_PARALLEL_H
-#define HW_C_PLUS_PLUS_PARALLEL_H
+#ifndef LIB_PARALLEL_PARALLEL_H_
+#define LIB_PARALLEL_PARALLEL_H_
 
 #include "segment.h"
 
@@ -11,4 +11,4 @@ int segment_processing(char *array, segment *segments, long child_count);
 
 int search_max_sequence(segment *segments, long child_count, long result[2]);
 
-#endif //HW_C_PLUS_PLUS_PARALLEL_H
+#endif  // LIB_PARALLEL_PARALLEL_H_

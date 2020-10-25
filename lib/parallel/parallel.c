@@ -6,8 +6,6 @@
 #include "parallel.h"
 #include "utils.h"
 #include <sys/mman.h>
-//TODO: заменить на sysinfo при отправке на удаленный сервер
-//#include <sys/sysctl.h>
 
 int parallel(const char *filename, long size, long result[2]) {
     long child_count = sysconf(_SC_NPROCESSORS_ONLN);
