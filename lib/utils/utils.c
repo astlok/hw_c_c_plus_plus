@@ -1,8 +1,7 @@
+#include "utils.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-#include "utils.h"
 
 long file_size(const char *filename) {
     char path[100];
