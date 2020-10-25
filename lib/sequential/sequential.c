@@ -6,18 +6,18 @@
 int sequential(const char *filename, long size, long result[2]) {
     char *array = (char*)malloc(size * sizeof(char));
     if (array == NULL) {
-        return -1;
+        return EXIT_FAILURE;
     }
-    if (input_array(array, filename, &size) == -1) {
+    if (input_array(array, filename, &size) == EXIT_FAILURE) {
         free(array);
-        return -1;
+        return EXIT_FAILURE;
     }
 
-    if (max_sequence(array, 0, size, result) == -1) {
+    if (max_sequence(array, 0, size, result) == EXIT_FAILURE) {
         free(array);
-        return -1;
+        return EXIT_FAILURE;
     }
 
     free(array);
-    return 0;
+    return EXIT_SUCCESS;
 }

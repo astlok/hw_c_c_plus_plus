@@ -10,11 +10,11 @@ int parallel(const char *filename, long size, long result[2]) {
     long child_count = sysconf(_SC_NPROCESSORS_ONLN);
     char *array = (char *) malloc(size * sizeof(char));
     if (array == NULL) {
-        return -1;
+        return EXIT_FAILURE;
     }
-    if (input_array(array, filename, &size) == -1) {
+    if (input_array(array, filename, &size) == EXIT_FAILURE) {
         free(array);
-        return -1;
+        return EXIT_FAILURE;
     }
 
     long segment_size = size / child_count;
@@ -22,12 +22,12 @@ int parallel(const char *filename, long size, long result[2]) {
                              MAP_SHARED | MAP_ANONYMOUS, -1, 0);
     if (segments == MAP_FAILED) {
         free(array);
-        return -1;
+        return EXIT_FAILURE;
     }
 
-    if (input_segments(segments, array, child_count, segment_size, size) == -1) {
+    if (input_segments(segments, array, child_count, segment_size, size) == EXIT_FAILURE) {
         free(array);
-        return -1;
+        return EXIT_FAILURE;
     }
 
     pid_t pid = fork();
@@ -37,11 +37,11 @@ int parallel(const char *filename, long size, long result[2]) {
         }
     }
 
-    if (segment_processing(array, segments, child_count) == -1) {
+    if (segment_processing(array, segments, child_count) == EXIT_FAILURE) {
         if (pid != 0) {
             munmap(segments, child_count);
             free(array);
-            return -1;
+            return EXIT_FAILURE;
         } else {
             exit(EXIT_FAILURE);
         }
@@ -58,14 +58,14 @@ int parallel(const char *filename, long size, long result[2]) {
             }
         }
     }
-    if (search_max_sequence(segments, child_count, result) == -1) {
+    if (search_max_sequence(segments, child_count, result) == EXIT_FAILURE) {
         munmap(segments, child_count);
         free(array);
-        return -1;
+        return EXIT_FAILURE;
     }
     munmap(segments, child_count);
     free(array);
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int input_segments(segment *segments, const char *array, long child_count, long segment_size, long size) {
@@ -91,7 +91,7 @@ int input_segments(segment *segments, const char *array, long child_count, long 
         segments[i].use = 0;
         segments[i].max_size = 0;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int segment_processing(char *array, segment *segments, long child_count) {
@@ -104,7 +104,7 @@ int segment_processing(char *array, segment *segments, long child_count) {
                 segments[i].max_size = segments[i].result[1] - segments[i].result[0];
             }
         }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int search_max_sequence(segment *segments, long child_count, long result[2]) {
@@ -116,7 +116,7 @@ int search_max_sequence(segment *segments, long child_count, long result[2]) {
             result[1] = segments[i].result[1];
         }
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 
