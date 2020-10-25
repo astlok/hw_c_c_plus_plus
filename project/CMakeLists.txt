@@ -1,6 +1,4 @@
 include_directories(include)
-include_directories(../lib/parallel)
-include_directories(../lib/sequential)
 
 set(PROJECT_SOURCE_FILES
         src/main.c)

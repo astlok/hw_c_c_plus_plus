@@ -1,4 +1,5 @@
 #include <stdlib.h>
+
 #include "sequential.h"
 #include "utils.h"
 
