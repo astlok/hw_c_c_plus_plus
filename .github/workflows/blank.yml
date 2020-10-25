@@ -45,4 +45,4 @@ jobs:
           valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no --error-exitcode=1  ./tests
       - name: gcovr
         run:
-          cd ../../ && gcovr -r
+          gcovr -r
