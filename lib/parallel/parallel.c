@@ -98,7 +98,10 @@ int segment_processing(char *array, segment *segments, long child_count) {
         for (int i = 0; i < child_count; ++i) {
             if (segments[i].use == 0) {
                 segments[i].use = 1;
-                if (max_sequence(array, segments[i].begin, segments[i].end, segments[i].result) == EXIT_FAILURE) {
+                if (max_sequence(array,
+                                 segments[i].begin,
+                                 segments[i].end,
+                                 segments[i].result) == EXIT_FAILURE) {
                     return EXIT_FAILURE;
                 }
                 segments[i].max_size = segments[i].result[1] - segments[i].result[0];
