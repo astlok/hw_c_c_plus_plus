@@ -15,4 +15,4 @@ enable_testing()
 
 add_subdirectory(project)
 add_subdirectory(tests)
-
+add_subdirectory(lib)

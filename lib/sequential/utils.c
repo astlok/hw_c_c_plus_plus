@@ -2,10 +2,12 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../lib/sequential/utils.h"
+#include "utils.h"
 
 long file_size(const char *filename) {
-    FILE *file = fopen(filename, "r");
+    char path[100];
+    sprintf(path,"../../tests/%s", filename);
+    FILE *file = fopen(path, "r");
     if (!file) {
         return -1;
     }
@@ -18,7 +20,9 @@ long file_size(const char *filename) {
 }
 
 int input_array(char *array, const char *filename, const long *size) {
-    FILE *file = fopen(filename, "r");
+    char path[100];
+    sprintf(path,"../../tests/%s", filename);
+    FILE *file = fopen(path, "r");
     if (file == NULL) {
         return -1;
     }
