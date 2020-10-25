@@ -1,16 +1,12 @@
-
 name: CI
 
 on: [push]
 
-
 jobs:
   tests:
     runs-on: ubuntu-20.04
-
     steps:
       - uses: actions/checkout@v2
-
       - name: install libs
         run: |
           sudo apt install python2

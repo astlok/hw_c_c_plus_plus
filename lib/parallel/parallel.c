@@ -121,15 +121,3 @@ int search_max_sequence(segment *segments, long child_count, long result[2]) {
     }
     return EXIT_SUCCESS;
 }
-
-
-
-
-
-
-
-
-
-
-
-

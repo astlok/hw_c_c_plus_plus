@@ -171,7 +171,6 @@ TEST(test_parallel, test8) {
     ASSERT_EQ(result[1], 624);
 }
 
-
 TEST(stress_test, test) {
     const char *filename = "test_stress.txt";
 
