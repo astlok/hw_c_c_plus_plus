@@ -1,0 +1,44 @@
+name: CI
+
+on: [push]
+
+jobs:
+  tests:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: install libs
+        run: |
+          sudo apt install python2
+          sudo apt install cmake
+          sudo apt-get install libgtest-dev
+          sudo apt-get install valgrind
+          sudo apt-get install cppcheck
+          sudo apt install python3-pip
+          pip3 install gcovr
+          sudo apt install gcovr
+      - name: build
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          make
+      - name: linters
+        run: |
+          ./linters/run.sh --local
+      - name: generate stress test file
+        run: 
+          cd tests && python3 stress_test.py
+      - name: gtests
+        run: |
+          cd build
+          cd tests
+          ./tests
+      - name: valgrind
+        run: |
+          cd build
+          cd tests
+          valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no --error-exitcode=1  ./tests
+      - name: gcovr
+        run:
+          gcovr -r .
