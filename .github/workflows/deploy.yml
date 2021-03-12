@@ -1,7 +1,7 @@
 name: CI
 on:
   push:
-    branches: [ making-cd ]
+    branches: [ IZ2 ]
 jobs:
   build:
     runs-on: ubuntu-latest
